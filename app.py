@@ -29,7 +29,7 @@ if uploaded_file and api_key:
         try:
             # 구글 Gemini AI 세팅
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-２.5-flash") # 완전 무료 모델
+            model = genai.GenerativeModel("gemini-2.5-flash") # 완전 무료 모델
             
             # AI에게 시킬 일 (프롬프트)
             prompt = f"""
