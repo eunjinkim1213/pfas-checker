@@ -1,0 +1,5 @@
+Plaintext
+
+streamlit
+google-generativeai
+pandas
