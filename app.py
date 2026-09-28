@@ -31,7 +31,7 @@ if uploaded_file and api_key:
             genai.configure(api_key=api_key)
             model = genai.GenerativeModel("gemini-3.8-flash") # 완전 무료 모델
             
-            # AI에게 시킬 일 (프롬프트)
+        # AI에게 시킬 일 (프롬프트)
         prompt = f"""
 너는 EU REACH, CLP 및 한국 화학물질 규제(PFAS 포함) 전문가야.
 사진 속 라벨에서 성분명, CAS 번호, 위험 표시를 읽고 판정해줘.
@@ -54,12 +54,12 @@ if uploaded_file and api_key:
 2. 규제 상태 판정: (🟢 안전 / 🟡 주의 / 🔴 위험-PFAS규제대상 중 택1)
 3. 화공/반도체 공정 관점의 한 줄 설명: (판정 근거 및 대체 물질 필요 여부 등)
 """
-            
-            response = model.generate_content([prompt, image])
-            
-            # 결과 출력
-            st.success("분석 완료!")
-            st.markdown(response.text)
-            
-        except Exception as e:
-            st.error(f"오류가 발생했습니다: {e}")
+
+        response = model.generate_content([prompt, image])
+
+        # 결과 출력
+        st.success("분석 완료!")
+        st.markdown(response.text)
+
+    except Exception as e:
+        st.error(f"오류가 발생했습니다: {e}")
