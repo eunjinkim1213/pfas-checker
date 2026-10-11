@@ -9,7 +9,16 @@ st.title("🧪 EU REACH·PFAS 화학성분 판별기")
 st.write("화학제품 라벨이나 성분표를 사진으로 찍어 올리면, AI가 유럽 규제 물질을 찾아냅니다.")
 
 # 2. 무료 API 키 입력 (보안)
-api_key = st.text_input("구글 AI API 키를 입력하세요:", type="password")
+# Secrets에 등록된 키를 자동으로 가져옴
+if "GEMINI_API_KEY" in st.secrets:
+    api_key = st.secrets["GEMINI_API_KEY"]
+else:
+    # 혹시 Secrets 설정이 안 됐을 때만 비상용으로 입력창 노출
+    api_key = st.sidebar.text_input("Gemini API Key를 입력하세요", type="password")
+
+# 키 설정 적용
+if api_key:
+    genai.configure(api_key=api_key)
 
 # 3. 규제 DB 불러오기
 try:
