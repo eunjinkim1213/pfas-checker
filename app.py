@@ -15,8 +15,7 @@ from PIL import Image
 # 실제 사용 가능한 모델명으로 바꿔 쓰세요 (AI Studio에서 확인).
 MODELS = [
     "gemini-3.8-flash",
-    "gemini-2.5-flash",
-    "gemini-2.5-flash-lite",
+    "gemini-3.5-flash-lite",
 ]
 MAX_IMAGE_SIDE = 1024  # 이미지 축소 (토큰/전송량 절약)
 
