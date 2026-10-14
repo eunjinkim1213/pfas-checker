@@ -39,7 +39,7 @@ if st.button("🔍 규제 성분 분석 시작"):
         try:
             # 구글 Gemini AI 세팅
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-2.5-flash")
+            model = genai.GenerativeModel("gemini-3.8-flash")
 
             # AI에게 시킬 일 (프롬프트)
             prompt = f"""
