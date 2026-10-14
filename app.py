@@ -33,7 +33,8 @@ if uploaded_file and api_key:
     # 이미지 화면 표시
     image = Image.open(uploaded_file)
     st.image(image, caption="분석할 라벨 사진", use_container_width=True)
-
+    
+if st.button("🔍 규제 성분 분석 시작")
     with st.spinner("AI가 라벨을 읽고 유럽 규제 DB와 대조 중입니다..."):
         try:
             # 구글 Gemini AI 세팅
