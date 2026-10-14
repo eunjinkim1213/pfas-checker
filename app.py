@@ -29,7 +29,6 @@ except Exception:
 # 4. 스마트폰 카메라 촬영 또는 사진 업로드
 uploaded_file = st.camera_input("라벨 사진을 촬영하세요") or st.file_uploader("또는 사진 파일을 올리세요", type=["jpg", "png", "jpeg"])
 
-# 세션 상태 초기화 (중복 API 호출 방지용 캐시)
 if "result_text" not in st.session_state:
     st.session_state.result_text = None
 if "last_analyzed_file" not in st.session_state:
@@ -39,20 +38,16 @@ if uploaded_file and api_key:
     image = Image.open(uploaded_file)
     st.image(image, caption="분석할 라벨 사진", use_container_width=True)
 
-    # 새로운 사진이 들어오면 기존 결과 초기화
     if st.session_state.last_analyzed_file != uploaded_file.name:
         st.session_state.result_text = None
 
-    # 버튼 클릭 시 1회만 호출
     if st.button("🔍 규제 성분 분석 시작"):
-        # 이미 결과가 나온 상태면 다시 부르지 않음
-        if st.session_state.result_text is None:
-            with st.spinner("AI가 라벨을 읽고 유럽 규제 DB와 대조 중입니다..."):
-                try:
-                    genai.configure(api_key=api_key)
-                    model = genai.GenerativeModel("gemini-3.8-flash")
+        with st.spinner("AI가 라벨을 읽고 유럽 규제 DB와 대조 중입니다..."):
+            try:
+                genai.configure(api_key=api_key)
+                model = genai.GenerativeModel("gemini-3.8-flash")
 
-                    prompt = f"""
+                prompt = f"""
 너는 EU REACH, CLP 및 한국 화학물질 규제(PFAS 포함) 전문가야.
 사진 속 라벨에서 성분명, CAS 번호, 위험 표시를 읽고 판정해줘.
 
@@ -69,17 +64,14 @@ if uploaded_file and api_key:
 3. 🟢 안전:
    - 위험 픽토그램이 전혀 없고, 무불소(PFC-Free) 또는 친환경/천연 계면활성제 등 안전 성분만 있는 경우
 """
-                    response = model.generate_content([prompt, image])
-                    st.session_state.result_text = response.text
-                    st.session_state.last_analyzed_file = uploaded_file.name
 
-                except Exception as e:
-                    st.error(f"오류가 발생했습니다: {e}")
+                response = model.generate_content([prompt, image])
+                st.session_state.result_text = response.text
+                st.session_state.last_analyzed_file = uploaded_file.name
 
-    # 결과 출력
+            except Exception as e:
+                st.error(f"오류가 발생했습니다: {e}")
+
     if st.session_state.result_text:
         st.write(st.session_state.result_text)
 
-        except Exception as e:
-            st.error(f"오류가 발생했습니다: {e}")
-            
